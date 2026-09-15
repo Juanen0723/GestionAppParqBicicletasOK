@@ -7,8 +7,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 public class GestionParqueadero {
-    public static final long MINUTOS_BASE = 0;
-    public static final double VALOR_POR_MINUTO = 1000;
+    public static final long minutosBase = 0;
+    public static final double valorPorMinuto = 1000;
     private final Parqueadero parqueadero;
     private final List<Bicicleta> historial;
     public GestionParqueadero() {
@@ -18,51 +18,21 @@ public class GestionParqueadero {
     public Parqueadero obtenerParqueadero() {
         return parqueadero;
     }
-    public Bicicleta registrarIngreso(
-            String cedula,
-            String nombre,
-            String placa,
-            String tipo) {
+    public Bicicleta registrarIngreso(String cedula, String nombre, String placa, String tipo) {
 
-        return registrarIngreso(
-                cedula,
-                nombre,
-                placa,
-                tipo,
-                LocalDateTime.now()
-        );
+        return registrarIngreso(cedula, nombre, placa, tipo, LocalDateTime.now());
     }
 
-    public Bicicleta registrarIngreso(
-            String cedula,
-            String nombre,
-            String placa,
-            String tipo,
-            LocalDateTime fechaIngreso) {
+    public Bicicleta registrarIngreso(String cedula, String nombre, String placa, String tipo, LocalDateTime fechaIngreso) {
 
-        validarTexto(
-                cedula,
-                "La cédula del dueño es obligatoria."
-        );
-
-        validarTexto(
-                nombre,
-                "El nombre del dueño es obligatorio."
-        );
-
-        validarTexto(
-                placa,
-                "El número serial de la bicicleta es obligatorio."
-        );
-
-        validarTexto(
-                tipo,
-                "El color de la bicicleta es obligatorio."
-        );
+        validarTexto(cedula, "La cédula del dueño es obligatoria");
+        validarTexto(nombre, "El nombre del dueño es obligatorio.");
+        validarTexto(placa, "El número serial de la bicicleta es obligatorio.");
+        validarTexto(tipo, "El color de la bicicleta es obligatorio.");
 
         if (fechaIngreso == null) {
             throw new IllegalArgumentException(
-                    "La fecha de ingreso es obligatoria."
+                    "La fecha de ingreso es obligatoria"
             );
         }
 
@@ -70,8 +40,8 @@ public class GestionParqueadero {
                 >= Parqueadero.CAPACIDAD_MAXIMA) {
 
             throw new IllegalStateException(
-                    "El parqueadero está lleno. "
-                            + "No hay cupos disponibles."
+                    "El parqueadero está lleno "
+                            + "No hay cupos disponibles"
             );
         }
 
@@ -79,7 +49,7 @@ public class GestionParqueadero {
 
             throw new IllegalArgumentException(
                     "La cédula ya tiene una bicicleta "
-                            + "dentro del parqueadero."
+                            + "dentro del parqueadero"
             );
         }
 
@@ -87,26 +57,15 @@ public class GestionParqueadero {
 
             throw new IllegalArgumentException(
                     "La bicicleta ya está registrada "
-                            + "dentro del parqueadero."
+                            + "dentro del parqueadero"
             );
         }
 
-        Bicicleta bicicleta =
-                new Bicicleta(
-                        cedula.trim(),
-                        nombre.trim(),
-                        placa.trim().toUpperCase(),
-                        tipo.trim(),
-                        fechaIngreso
-                );
+        Bicicleta bicicleta = new Bicicleta(cedula.trim(), nombre.trim(), placa.trim().toUpperCase(), tipo.trim(), fechaIngreso);
 
         if (!parqueadero.agregarBicicleta(bicicleta)) {
-
-            throw new IllegalStateException(
-                    "No fue posible registrar el ingreso."
-            );
+            throw new IllegalStateException("No fue posible registrar el ingreso de la bicicleta");
         }
-
         return bicicleta;
     }
 
@@ -116,7 +75,7 @@ public class GestionParqueadero {
             return 0;
         }
 
-        return minutos * VALOR_POR_MINUTO;
+        return minutos * valorPorMinuto;
     }
 
     public double calcularValor(
@@ -124,7 +83,6 @@ public class GestionParqueadero {
             LocalDateTime salida) {
 
         if (bicicleta == null || salida == null) {
-
             throw new IllegalArgumentException(
                     "La bicicleta y la salida son obligatorias."
             );
@@ -138,9 +96,7 @@ public class GestionParqueadero {
 
         if (minutos < 0) {
 
-            throw new IllegalArgumentException(
-                    "La salida no puede ser anterior al ingreso."
-            );
+            throw new IllegalArgumentException("La salida no puede ser anterior al ingreso");
         }
 
         return calcularValor(minutos);
@@ -157,21 +113,15 @@ public class GestionParqueadero {
         if (bicicleta == null) {
 
             throw new IllegalArgumentException(
-                    "No existe una bicicleta activa "
-                            + "para esa cédula."
+                    "No existe una bicicleta registrada actualmente "
+                            + "para esa cédula"
             );
         }
 
-        validarTexto(
-                metodoPago,
-                "Debe seleccionar un método de pago."
-        );
+        validarTexto(metodoPago, "Debe seleccionar un método de pago");
 
         double valor =
-                calcularValor(
-                        bicicleta,
-                        salida
-                );
+                calcularValor(bicicleta, salida);
 
         bicicleta.establecerFechaSalida(salida);
 
@@ -195,13 +145,11 @@ public class GestionParqueadero {
     public List<Bicicleta> obtenerReportePorDia(
             LocalDate dia) {
 
-        List<Bicicleta> resultado =
-                new ArrayList<>();
+        List<Bicicleta> resultado = new ArrayList<>();
 
         for (Bicicleta bicicleta : historial) {
 
-            if (dia.equals(
-                    bicicleta.obtenerFechaIngresoDia())) {
+            if (dia.equals(bicicleta.obtenerFechaIngresoDia())) {
 
                 resultado.add(bicicleta);
             }
@@ -221,9 +169,7 @@ public class GestionParqueadero {
 
         double total = 0;
 
-        for (Bicicleta bicicleta :
-                obtenerReportePorDia(dia)) {
-
+        for (Bicicleta bicicleta : obtenerReportePorDia(dia)) {
             total += bicicleta.obtenerValorPagado();
         }
 

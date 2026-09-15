@@ -49,27 +49,16 @@ public class VentanaGral extends JFrame {
         estiloBoton(btnIngreso);
         ingreso.add(new JLabel());
         ingreso.add(btnIngreso);
-
         JPanel salida = new JPanel(new GridLayout(2, 2, 6, 6));
         salida.setBorder(BorderFactory.createTitledBorder("2. Registrar salida y cobrar"));
         salida.add(new JLabel("C.C. del Dueño:"));
         txtCedulaSalida = new JTextField();
         salida.add(txtCedulaSalida);
-
         JButton btnSalida = new JButton("Cobrar Y Liberar");
         estiloBoton(btnSalida);
         salida.add(new JLabel());
         salida.add(btnSalida);
-
-        JPanel consultas =
-                new JPanel(
-                        new GridLayout(
-                                2,
-                                1,
-                                6,
-                                6
-                        )
-                );
+        JPanel consultas = new JPanel(new GridLayout(2, 1, 6, 6));
 
         consultas.setBorder(
                 BorderFactory.createTitledBorder("3. Reportes"));
@@ -80,90 +69,34 @@ public class VentanaGral extends JFrame {
         consultas.add(btnReporte);
         consultas.add(btnEstado);
         izquierdo.add(ingreso);
-        izquierdo.add(
-                Box.createVerticalStrut(10)
-        );
-
+        izquierdo.add(Box.createVerticalStrut(10));
         izquierdo.add(salida);
-
-        izquierdo.add(
-                Box.createVerticalStrut(10)
-        );
-
+        izquierdo.add(Box.createVerticalStrut(10));
         izquierdo.add(consultas);
-
-        JPanel derecho =
-                new JPanel(
-                        new BorderLayout()
-                );
-
-        derecho.setBorder(
-                BorderFactory.createTitledBorder(
-                        "Información del sistema"
-                )
-        );
-
+        JPanel derecho = new JPanel(new BorderLayout());
+        derecho.setBorder(BorderFactory.createTitledBorder("Información del sistema"));
         txtArea = new JTextArea();
-
         txtArea.setEditable(false);
-
-        txtArea.setFont(
-                new Font(
-                        "Monospaced",
-                        Font.PLAIN,
-                        13
-                )
-        );
-
-        derecho.add(
-                new JScrollPane(txtArea),
-                BorderLayout.CENTER
-        );
-
-        add(
-                izquierdo,
-                BorderLayout.WEST
-        );
-
-        add(
-                derecho,
-                BorderLayout.CENTER
-        );
-
-        btnIngreso.addActionListener(
-                e -> registrarIngreso()
-        );
-
+        txtArea.setFont(new Font("Monospaced", Font.PLAIN, 13));
+        derecho.add(new JScrollPane(txtArea), BorderLayout.CENTER);
+        add(izquierdo, BorderLayout.WEST);
+        add(derecho, BorderLayout.CENTER);
+        btnIngreso.addActionListener(e -> registrarIngreso());
         btnSalida.addActionListener(
-                e -> registrarSalida()
-        );
-
-        btnReporte.addActionListener(
-                e -> mostrarReporte()
-        );
-
-        btnEstado.addActionListener(
-                e -> mostrarEstado()
-        );
-
+                e -> registrarSalida());
+        btnReporte.addActionListener(e -> mostrarReporte());
+        btnEstado.addActionListener(e -> mostrarEstado());
         mostrarEstado();
     }
 
     private void registrarIngreso() {
-
         try {
 
-            servicio.registrarIngreso(
-                    txtCedulaIngreso.getText(),
-                    txtNombre.getText(),
-                    txtSerial.getText(),
-                    txtColor.getText()
-            );
-
+            servicio.registrarIngreso(txtCedulaIngreso.getText(), txtNombre.getText(), txtSerial.getText(), txtColor.getText());
             JOptionPane.showMessageDialog(
                     this,
 
-                    "Ingreso registrado correctamente.\n"
+                    "Ingreso registrado correctamente\n"
                             + "Cupos libres: "
                             + servicio
                             .obtenerParqueadero()
@@ -210,8 +143,8 @@ public class VentanaGral extends JFrame {
             if (bicicleta == null) {
 
                 throw new IllegalArgumentException(
-                        "No existe una bicicleta registrada "
-                                + "con esa cédula."
+                        "No existe una bicicleta registrada actualmente"
+                                + "con esa cédula"
                 );
             }
 
@@ -245,50 +178,6 @@ public class VentanaGral extends JFrame {
 
                             this,
 
-                            " Valor a cobrar\n"
-
-                                    + "Nombre del Dueño: "
-                                    + bicicleta
-                                    .obtenerNombreDueno()
-
-                                    + "\nC.C. del Dueño: "
-                                    + bicicleta
-                                    .obtenerCedulaDueno()
-
-                                    + "\nTiempo de permanencia: "
-                                    + minutos
-                                    + " minutos"
-
-                                    + "\n\nVALOR A COBRAR: $"
-                                    + String.format(
-                                    "%.0f",
-                                    valor
-                            )
-
-                                    + "\n\n"
-                                    + "Seleccione el método de pago:",
-
-                            "Método de Pago",
-
-                            JOptionPane.QUESTION_MESSAGE,
-
-                            null,
-
-                            metodosPago,
-
-                            metodosPago[0]
-                    );
-
-            if (metodoPago == null) {
-
-                return;
-            }
-
-            int confirmar =
-                    JOptionPane.showOptionDialog(
-
-                            this,
-
                             "Nombre del Dueño: "
                                     + bicicleta
                                     .obtenerNombreDueno()
@@ -305,43 +194,34 @@ public class VentanaGral extends JFrame {
                                     + bicicleta
                                     .obtenerTipo()
 
-                                    + "\nTiempo: "
+                                    + "\n\nPermanencia: "
                                     + minutos
                                     + " minutos"
 
-                                    + "\nValor a cobrar: $"
+                                    + "\nValor a pagar: $"
                                     + String.format(
                                     "%.0f",
                                     valor
                             )
 
-                                    + "\nMétodo de pago: "
-                                    + metodoPago
+                                    + "\n\nSeleccione el método de pago:",
 
-                                    + "\n\n¿Desea registrar "
-                                    + "la salida y liberar "
-                                    + "el cupo?",
-
-                            "Confirmar salida y cobro",
-
-                            JOptionPane.YES_NO_OPTION,
+                            "Salida y cobro",
 
                             JOptionPane.QUESTION_MESSAGE,
 
                             null,
 
-                            new Object[]{
-                                    "Sí",
-                                    "No"
-                            },
+                            metodosPago,
 
-                            "Sí"
+                            metodosPago[0]
                     );
 
-            if (confirmar != 0) {
+            if (metodoPago == null) {
 
                 return;
             }
+
             double valorFinal =
                     servicio
                             .registrarSalidaYCalcularPago(
@@ -349,32 +229,29 @@ public class VentanaGral extends JFrame {
                                     horaSalida,
                                     metodoPago
                             );
+
+            int cuposDisponibles =
+                    servicio
+                            .obtenerParqueadero()
+                            .obtenerCuposLibres();
+
             JOptionPane.showMessageDialog(
 
                     this,
 
-                    "Pago registrado exitosamente.\n\n"
+                    "Pago Exitoso\n"
 
-                            + "Valor recibido: $"
-                            + String.format(
-                            "%.0f",
-                            valorFinal
-                    )
+                            + "\nBicicleta retirada correctamente"
 
-                            + "\nMétodo de pago: "
-                            + metodoPago
-
-                            + "\nCupo liberado.",
-
-                    "Salida y cobro",
-
-                    JOptionPane.INFORMATION_MESSAGE
             );
+
             txtCedulaSalida.setText("");
+
             mostrarEstado();
 
         } catch (
-                IllegalArgumentException ex
+                IllegalArgumentException |
+                IllegalStateException ex
         ) {
 
             JOptionPane.showMessageDialog(
@@ -403,7 +280,7 @@ public class VentanaGral extends JFrame {
                 .append("\n");
 
         sb.append(
-                        "Bicicletas Retiradas: "
+                        "Bicicletas Cobradas/Retiradas: "
                 )
                 .append(lista.size())
                 .append("\n");
@@ -563,9 +440,6 @@ public class VentanaGral extends JFrame {
                 .append(libres)
                 .append("\n\n");
 
-        sb.append(
-                "Bicicletas registradas actualmente\n"
-        );
         boolean hayBicicletas = false;
         int numero = 1;
         for (Bicicleta b :
@@ -578,13 +452,13 @@ public class VentanaGral extends JFrame {
                 hayBicicletas = true;
 
                 sb.append(
-                                "\nBicicleta #"
+                                "\n\nBicicleta #"
                         )
                         .append(numero++)
                         .append("\n");
 
                 sb.append(
-                                "Nombre del Dueño : "
+                                "\nNombre del Dueño : "
                         )
                         .append(
                                 b.obtenerNombreDueno()
@@ -627,14 +501,9 @@ public class VentanaGral extends JFrame {
         }
 
         if (!hayBicicletas) {
-
-            sb.append(
-                    "\nNo hay bicicletas actualmente\n"
-            );
+            sb.append("\nNo hay bicicletas actualmente en el parqueadero\n");
         }
-
-        txtArea.setText(
-                sb.toString()
+        txtArea.setText(sb.toString()
         );
     }
     private void limpiarIngreso() {
