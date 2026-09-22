@@ -6,10 +6,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/**
- * Responsabilidad única: construir el texto que se muestra en los reportes
- * y en el estado del parqueadero.
- */
+
 public class GeneradorReporte {
 
     private final DateTimeFormatter formato;
