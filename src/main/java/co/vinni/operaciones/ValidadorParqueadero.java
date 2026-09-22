@@ -1,20 +1,17 @@
 package co.vinni.operaciones;
 
-/**
- * Responsabilidad única: validar los datos de entrada del parqueadero.
- */
 public class ValidadorParqueadero {
 
     public void validarIngreso(
+            String nombrea,
             String cedula,
-            String nombre,
             String placa,
             String tipo) {
 
+        validarTexto(nombre, "El nombre del dueño es obligatorio");
         validarTexto(cedula, "La cédula del dueño es obligatoria");
-        validarTexto(nombre, "El nombre del dueño es obligatorio.");
-        validarTexto(placa, "El número serial de la bicicleta es obligatorio.");
-        validarTexto(tipo, "El color de la bicicleta es obligatorio.");
+        validarTexto(placa, "El número serial de la bicicleta es obligatorio");
+        validarTexto(tipo, "El color de la bicicleta es obligatorio");
     }
 
     public void validarFechaIngreso(java.time.LocalDateTime fechaIngreso) {
