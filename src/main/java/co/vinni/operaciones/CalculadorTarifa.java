@@ -5,10 +5,6 @@ import co.vinni.datos.Bicicleta;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-/**
- * Responsabilidad única: calcular el valor a pagar por el tiempo de
- * permanencia de una bicicleta.
- */
 public class CalculadorTarifa {
 
     public static final double VALOR_POR_MINUTO = 1000;
